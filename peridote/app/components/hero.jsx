@@ -48,7 +48,7 @@ export default function Hero() {
                   Peridote
                 </span>
                 <svg 
-                  className="absolute bottom-2 left-0 w-full h-2"
+                  className="absolute bottom-2 left-0 w-full h-1"
                   viewBox="0 0 200 20"
                   preserveAspectRatio="none"
                 >
