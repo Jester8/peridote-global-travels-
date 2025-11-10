@@ -15,21 +15,7 @@ export default function Hero() {
   return (
     <section className="relative w-full bg-white overflow-hidden">
     
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Airplane Icon */}
-        <Plane
-          className="absolute text-[#009FE3]/10 animate-float-slow top-10 left-10 w-16 h-16"
-        />
-        {/* Globe Icon */}
-        <Globe2
-          className="absolute text-[#00587D]/10 animate-float-medium bottom-20 right-16 w-20 h-20"
-        />
-        {/* Map Pin Icon */}
-        <MapPin
-          className="absolute text-[#FF6B5B]/10 animate-float-fast top-1/3 right-1/4 w-14 h-14"
-        />
-      </div>
-
+    
       {/* Main Hero Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-16 py-12 sm:py-16 lg:py-24">
