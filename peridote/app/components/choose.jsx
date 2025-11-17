@@ -56,7 +56,7 @@ export default function TravelBooking() {
                             <input
                               type="text"
                               placeholder="Lagos (LOS)"
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -69,7 +69,7 @@ export default function TravelBooking() {
                             <input
                               type="text"
                               placeholder="London (LHR)"
-                              className="w-full pl-11 pr-4 py-2.5  border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -85,7 +85,7 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full text-black pl-11 text-sm pr-4 py-2.5 border border-gray-300  placeholder:text-black rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full text-black pl-11 text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -97,14 +97,14 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full pl-11 text-black text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full pl-11 text-black text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
                       </div>
 
                       {/* Search Button */}
-                      <button className="w-full  text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                      <button className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
                         <Search size={20} />
                         Search Flights
                       </button>
@@ -113,7 +113,7 @@ export default function TravelBooking() {
 
                   {activeTab === 'hotels' && (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm ">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Destination
@@ -123,7 +123,7 @@ export default function TravelBooking() {
                             <input
                               type="text"
                               placeholder="Enter city or hotel name"
-                              className="w-full pl-11  text-black pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full pl-11 text-black pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -134,7 +134,7 @@ export default function TravelBooking() {
                           <input
                             type="number"
                             placeholder="Number of guests"
-                            className="w-full px-4 py-2.5 text-black border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                            className="w-full px-4 py-2.5 text-black border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                           />
                         </div>
                       </div>
@@ -148,7 +148,7 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -160,13 +160,13 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
                       </div>
 
-                      <button className="w-full  text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                      <button className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
                         <Search size={20} />
                         Search Hotels
                       </button>
@@ -185,7 +185,7 @@ export default function TravelBooking() {
                             <input
                               type="text"
                               placeholder="Enter location"
-                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -198,7 +198,7 @@ export default function TravelBooking() {
                             <input
                               type="text"
                               placeholder="Enter location"
-                              className="w-full  text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -213,7 +213,7 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full text-black  text-sm  pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full text-black text-sm pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
@@ -225,13 +225,13 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
-                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
                         </div>
                       </div>
 
-                      <button className="w-full  bg-cyan-500 hover:bg-cyan-600  text-sm text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                      <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-sm text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
                         <Search size={20} />
                         Search Cars
                       </button>
@@ -288,7 +288,7 @@ export default function TravelBooking() {
                     <input
                       type="text"
                       placeholder="Lagos (LOS)"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -303,7 +303,7 @@ export default function TravelBooking() {
                     <input
                       type="text"
                       placeholder="London (LHR)"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -317,7 +317,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -331,7 +331,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -358,7 +358,7 @@ export default function TravelBooking() {
                     <input
                       type="text"
                       placeholder="City or hotel name"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -371,7 +371,7 @@ export default function TravelBooking() {
                   <input
                     type="number"
                     placeholder="Number of guests"
-                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                   />
                 </div>
 
@@ -384,7 +384,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -398,7 +398,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -425,7 +425,7 @@ export default function TravelBooking() {
                     <input
                       type="text"
                       placeholder="Enter location"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -440,7 +440,7 @@ export default function TravelBooking() {
                     <input
                       type="text"
                       placeholder="Enter location"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -454,7 +454,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -468,7 +468,7 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm"
+                      className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
