@@ -245,13 +245,9 @@ export default function TravelBooking() {
       </div>
 
       {/* Mobile Section */}
-      <div className="md:hidden bg-gradient-to-b from-slate-50 to-white min-h-screen px-4 py-6" style={{ fontFamily: 'var(--font-poppins)' }}>
+      <div className="md:hidden bg-gradient-to-b from-slate-50 to-white min-h-screen px-3 py-6" style={{ fontFamily: 'var(--font-poppins)' }}>
         <div className="max-w-md mx-auto space-y-4">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Book Your Trip</h1>
-            <p className="text-gray-600 text-sm mt-1">Find flights, hotels, and cars</p>
-          </div>
+        
 
           {/* Tab Navigation */}
           <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm">
@@ -276,7 +272,7 @@ export default function TravelBooking() {
 
           {/* Flights Section */}
           {activeTab === 'flights' && (
-            <div className="space-y-3">
+            <div className="space-y-3 ">
               <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
                 {/* From */}
                 <div>
