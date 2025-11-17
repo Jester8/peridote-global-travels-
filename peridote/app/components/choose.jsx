@@ -82,7 +82,7 @@ export default function Choose() {
                         <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                         <input
                           type="date"
-                          className="w-full pl-11 text-sm pr-4 py-2.5 border border-gray-300  placeholder:text-black rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
+                          className="w-full text-black pl-11 text-sm pr-4 py-2.5 border border-gray-300  placeholder:text-black rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none"
                         />
                       </div>
                     </div>
