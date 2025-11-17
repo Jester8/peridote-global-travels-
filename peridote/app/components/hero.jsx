@@ -18,18 +18,19 @@ export default function Hero() {
     
       {/* Main Hero Content */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-16 py-12 sm:py-16 lg:py-24">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-4 lg:gap-8 py-6 sm:py-8 lg:py-12 lg:pr-20">
           
           {/* Left Content */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-center">
+          <div className="w-full lg:w-1/2 flex flex-col justify-center lg:ml-16">
             <h1 
-              className="text-4xl sm:text-5xl lg:text-6xl font-medium text-black leading-tight mb-6"
-              style={{ fontFamily: 'var(--font-poppins)' }}
+              className="text-4xl sm:text-5xl lg:text-5xl font-medium text-black leading-tight mb-3"
+              style={{ fontFamily: 'var(--font-poppins)', fontWeight: 500 }}
             >
               Explore the world in style with{' '}
               <span className="relative inline-block">
                 <span 
-                  className=" font-bold bg-gradient-to-r from-[#009FE3] to-[#00587D] bg-clip-text text-transparent"
+                  className="font-bold bg-gradient-to-r from-[#009FE3] to-[#00587D] bg-clip-text text-transparent"
+                  style={{ fontWeight: 700 }}
                 >
                   Peridote
                 </span>
@@ -50,9 +51,9 @@ export default function Hero() {
               .
             </h1>
 
-            {/* 👇 Mobile Image (slides in before paragraph) */}
+        
             <div
-              className={`block lg:hidden mb-6 transition-all duration-700 ease-in-out transform ${
+              className={`block lg:hidden mb-4 transition-all duration-700 ease-in-out transform ${
                 slideIn ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}
             >
@@ -67,10 +68,11 @@ export default function Hero() {
             </div>
 
             <p 
-              className="text-gray-600 text-base sm:text-md lg:text-md leading-relaxed mb-8 max-w-lg"
-              style={{ fontFamily: 'var(--font-poppins)' }}
+              className="text-gray-600 text-base sm:text-md lg:text-md leading-relaxed mb-4 max-w-lg"
+              style={{ fontFamily: 'var(--font-poppins)', fontWeight: 500 }}
             >
-              Your journey to seamless travel starts here. Premium flights, luxury hotels, and reliable car rentals. Book premium flights, luxury hotels, and trusted car rentals effortlessly, and explore the world with confidence.
+              Your journey to seamless travel starts here. Premium flights, luxury hotels, and reliable car rentals.
+              Book premium flights, and explore the world with confidence.
             </p>
           </div>
 
@@ -90,7 +92,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* ✨ Floating Animation Keyframes */}
+
       <style jsx>{`
         @keyframes float-slow {
           0%, 100% { transform: translateY(0) rotate(0deg); }
