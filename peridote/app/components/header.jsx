@@ -291,7 +291,7 @@ export default function Header() {
                   </button>
 
                   <button className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium text-sm">
-                    <Image src="/icon.png" alt="Apple" width={18} height={18} />
+                    <Image src="/aapl.png" alt="Apple" width={40} height={40} />
                     <span className="hidden sm:inline text-black">Apple</span>
                   </button>
                 </div>
@@ -421,7 +421,7 @@ export default function Header() {
                   </button>
 
                   <button className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium text-sm">
-                    <Image src="/icon.png" alt="Apple" width={18} height={18} />
+                    <Image src="/aapl.png" alt="Apple" width={50} height={50} />
                     <span className="hidden sm:inline text-black">Apple</span>
                   </button>
                 </div>
