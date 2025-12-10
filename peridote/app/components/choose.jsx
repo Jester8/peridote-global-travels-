@@ -1,15 +1,54 @@
 "use client";
 import React, { useState } from 'react';
 import { Plane, Building2, Car, MapPin, Calendar, Search } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 export default function TravelBooking() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('flights');
+  const [flightData, setFlightData] = useState({
+    from: '',
+    to: '',
+    departureDate: '',
+    returnDate: ''
+  });
+  const [hotelData, setHotelData] = useState({
+    destination: '',
+    guests: '',
+    checkInDate: '',
+    checkOutDate: ''
+  });
+  const [carData, setCarData] = useState({
+    pickupLocation: '',
+    dropoffLocation: '',
+    pickupDate: '',
+    dropoffDate: ''
+  });
 
   const tabs = [
     { id: 'flights', label: 'Flights', icon: Plane },
     { id: 'hotels', label: 'Hotels', icon: Building2 },
     { id: 'cars', label: 'Cars', icon: Car }
   ];
+
+  const handleSearchFlights = () => {
+    router.push('/flights/available');
+  };
+
+  const handleFlightChange = (e) => {
+    const { name, value } = e.target;
+    setFlightData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleHotelChange = (e) => {
+    const { name, value } = e.target;
+    setHotelData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCarChange = (e) => {
+    const { name, value } = e.target;
+    setCarData(prev => ({ ...prev, [name]: value }));
+  };
 
   return (
     <>
@@ -55,6 +94,9 @@ export default function TravelBooking() {
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
+                              name="from"
+                              value={flightData.from}
+                              onChange={handleFlightChange}
                               placeholder="Lagos (LOS)"
                               className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
                             />
@@ -68,6 +110,9 @@ export default function TravelBooking() {
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
+                              name="to"
+                              value={flightData.to}
+                              onChange={handleFlightChange}
                               placeholder="London (LHR)"
                               className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
                             />
@@ -85,6 +130,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="departureDate"
+                              value={flightData.departureDate}
+                              onChange={handleFlightChange}
                               className="w-full text-black pl-11 text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -97,6 +145,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="returnDate"
+                              value={flightData.returnDate}
+                              onChange={handleFlightChange}
                               className="w-full pl-11 text-black text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -104,10 +155,15 @@ export default function TravelBooking() {
                       </div>
 
                       {/* Search Button */}
-                      <button className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
-                        <Search size={20} />
-                        Search Flights
-                      </button>
+                      <Link href="/flights/available">
+                        <button 
+                          onClick={handleSearchFlights}
+                          className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        >
+                          <Search size={20} />
+                          Search Flights
+                        </button>
+                      </Link>
                     </div>
                   )}
 
@@ -122,6 +178,9 @@ export default function TravelBooking() {
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
+                              name="destination"
+                              value={hotelData.destination}
+                              onChange={handleHotelChange}
                               placeholder="Enter city or hotel name"
                               className="w-full pl-11 text-black pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
@@ -133,6 +192,9 @@ export default function TravelBooking() {
                           </label>
                           <input
                             type="number"
+                            name="guests"
+                            value={hotelData.guests}
+                            onChange={handleHotelChange}
                             placeholder="Number of guests"
                             className="w-full px-4 py-2.5 text-black border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                           />
@@ -148,6 +210,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="checkInDate"
+                              value={hotelData.checkInDate}
+                              onChange={handleHotelChange}
                               className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -160,6 +225,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="checkOutDate"
+                              value={hotelData.checkOutDate}
+                              onChange={handleHotelChange}
                               className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -184,6 +252,9 @@ export default function TravelBooking() {
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
+                              name="pickupLocation"
+                              value={carData.pickupLocation}
+                              onChange={handleCarChange}
                               placeholder="Enter location"
                               className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
@@ -197,6 +268,9 @@ export default function TravelBooking() {
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
+                              name="dropoffLocation"
+                              value={carData.dropoffLocation}
+                              onChange={handleCarChange}
                               placeholder="Enter location"
                               className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
@@ -213,6 +287,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="pickupDate"
+                              value={carData.pickupDate}
+                              onChange={handleCarChange}
                               className="w-full text-black text-sm pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -225,6 +302,9 @@ export default function TravelBooking() {
                             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="date"
+                              name="dropoffDate"
+                              value={carData.dropoffDate}
+                              onChange={handleCarChange}
                               className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
                             />
                           </div>
@@ -247,8 +327,6 @@ export default function TravelBooking() {
       {/* Mobile Section */}
       <div className="md:hidden bg-gradient-to-b from-slate-50 to-white min-h-screen px-3 py-6" style={{ fontFamily: 'var(--font-poppins)' }}>
         <div className="max-w-md mx-auto space-y-4">
-        
-
           {/* Tab Navigation */}
           <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm">
             {tabs.map((tab) => {
@@ -283,8 +361,11 @@ export default function TravelBooking() {
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="text"
+                      name="from"
+                      value={flightData.from}
+                      onChange={handleFlightChange}
                       placeholder="Lagos (LOS)"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -298,8 +379,11 @@ export default function TravelBooking() {
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="text"
+                      name="to"
+                      value={flightData.to}
+                      onChange={handleFlightChange}
                       placeholder="London (LHR)"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -313,7 +397,10 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="departureDate"
+                      value={flightData.departureDate}
+                      onChange={handleFlightChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -327,15 +414,23 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black  pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="returnDate"
+                      value={flightData.returnDate}
+                      onChange={handleFlightChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
 
-                <button className="w-85 text-black bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
-                  <Search size={18} />
-                  Search Flights
-                </button>
+                <Link href="/flights/available">
+                  <button 
+                    onClick={handleSearchFlights}
+                    className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95"
+                  >
+                    <Search size={18} />
+                    Search Flights
+                  </button>
+                </Link>
               </div>
             </div>
           )}
@@ -353,8 +448,11 @@ export default function TravelBooking() {
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="text"
+                      name="destination"
+                      value={hotelData.destination}
+                      onChange={handleHotelChange}
                       placeholder="City or hotel name"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -366,8 +464,11 @@ export default function TravelBooking() {
                   </label>
                   <input
                     type="number"
+                    name="guests"
+                    value={hotelData.guests}
+                    onChange={handleHotelChange}
                     placeholder="Number of guests"
-                    className="w-85 text-black px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                    className="w-full text-black px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                   />
                 </div>
 
@@ -380,7 +481,10 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="checkInDate"
+                      value={hotelData.checkInDate}
+                      onChange={handleHotelChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -394,12 +498,15 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="checkOutDate"
+                      value={hotelData.checkOutDate}
+                      onChange={handleHotelChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
 
-                <button className="w-85 text-black bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
+                <button className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
                   <Search size={18} />
                   Search Hotels
                 </button>
@@ -420,8 +527,11 @@ export default function TravelBooking() {
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="text"
+                      name="pickupLocation"
+                      value={carData.pickupLocation}
+                      onChange={handleCarChange}
                       placeholder="Enter location"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -435,8 +545,11 @@ export default function TravelBooking() {
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="text"
+                      name="dropoffLocation"
+                      value={carData.dropoffLocation}
+                      onChange={handleCarChange}
                       placeholder="Enter location"
-                      className="w-85 text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -450,7 +563,10 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black  pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="pickupDate"
+                      value={carData.pickupDate}
+                      onChange={handleCarChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
@@ -464,12 +580,15 @@ export default function TravelBooking() {
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
                     <input
                       type="date"
-                      className="w-85 text-black  pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
+                      name="dropoffDate"
+                      value={carData.dropoffDate}
+                      onChange={handleCarChange}
+                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
                     />
                   </div>
                 </div>
 
-                <button className="w-85 text-black bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
+                <button className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
                   <Search size={18} />
                   Search Cars
                 </button>
