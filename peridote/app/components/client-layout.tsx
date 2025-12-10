@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Loader from './loader';
+
 
 export default function ClientLayout({
   children,
@@ -18,9 +18,7 @@ export default function ClientLayout({
     return () => clearTimeout(timer);
   }, []);
 
-  if (showLoader) {
-    return <Loader />;
-  }
+ 
 
   return <>{children}</>;
 }
