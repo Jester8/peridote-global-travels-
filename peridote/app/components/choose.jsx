@@ -1,16 +1,16 @@
 "use client";
 import React, { useState } from 'react';
 import { Plane, Building2, Car, MapPin, Calendar, Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+
 export default function TravelBooking() {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState('flights');
+  const [flightType, setFlightType] = useState('roundtrip');
   const [flightData, setFlightData] = useState({
     from: '',
     to: '',
     departureDate: '',
-    returnDate: ''
+    returnDate: '',
+    multicity: [{ from: '', to: '', date: '' }]
   });
   const [hotelData, setHotelData] = useState({
     destination: '',
@@ -31,13 +31,35 @@ export default function TravelBooking() {
     { id: 'cars', label: 'Cars', icon: Car }
   ];
 
-  const handleSearchFlights = () => {
-    router.push('/flights/available');
-  };
+  const flightTypes = [
+    { id: 'roundtrip', label: 'Round Trip' },
+    { id: 'oneway', label: 'One Way' },
+    { id: 'multicity', label: 'Multi-City' }
+  ];
 
   const handleFlightChange = (e) => {
     const { name, value } = e.target;
     setFlightData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleMulticityChange = (index, field, value) => {
+    const updated = [...flightData.multicity];
+    updated[index][field] = value;
+    setFlightData(prev => ({ ...prev, multicity: updated }));
+  };
+
+  const addMulticitySegment = () => {
+    setFlightData(prev => ({
+      ...prev,
+      multicity: [...prev.multicity, { from: '', to: '', date: '' }]
+    }));
+  };
+
+  const removeMulticitySegment = (index) => {
+    setFlightData(prev => ({
+      ...prev,
+      multicity: prev.multicity.filter((_, i) => i !== index)
+    }));
   };
 
   const handleHotelChange = (e) => {
@@ -51,46 +73,62 @@ export default function TravelBooking() {
   };
 
   return (
-    <>
-      {/* Desktop Section */}
-      <div className="hidden md:block bg-white -mt-0 relative z-10 px-4 md:px-8 pb-8 md:pb-12">
-        <div className="flex items-center justify-center">
-          <div className="w-full max-w-6xl">
-            <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6" style={{ fontFamily: 'var(--font-poppins)' }}>
-              {/* Main Card */}
-              <div className="w-full lg:flex-1 bg-white rounded-2xl shadow-sm overflow-hidden">
-                {/* Tabs */}
-                <div className="flex border-b border-gray-200">
-                  {tabs.map((tab) => {
-                    const Icon = tab.icon;
-                    return (
+    <div className="bg-gradient-to-br from-slate-50 to-white min-h-screen px-3 md:px-8 py-6 md:py-12" style={{ fontFamily: 'var(--font-poppins)' }}>
+      <div className="flex items-center justify-center">
+        <div className="w-full max-w-4xl">
+          {/* Main Card */}
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            {/* Tabs */}
+            <div className="flex border-b border-gray-200 flex-wrap md:flex-nowrap">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 md:px-6 py-3 md:py-4 font-medium transition-all text-sm md:text-base ${
+                      activeTab === tab.id
+                        ? 'bg-cyan-500 text-white'
+                        : 'bg-white text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Icon size={20} />
+                    <span className="hidden sm:inline">{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Form Content */}
+            <div className="p-4 md:p-6">
+              {activeTab === 'flights' && (
+                <div className="space-y-4">
+                  {/* Flight Type Selector */}
+                  <div className="flex gap-2 flex-wrap">
+                    {flightTypes.map((type) => (
                       <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 font-medium transition-all ${
-                          activeTab === tab.id
+                        key={type.id}
+                        onClick={() => setFlightType(type.id)}
+                        className={`px-3 md:px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                          flightType === type.id
                             ? 'bg-cyan-500 text-white'
-                            : 'bg-white text-gray-600 hover:bg-gray-50'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                         }`}
                       >
-                        <Icon size={20} />
-                        <span className="hidden sm:inline">{tab.label}</span>
+                        {type.label}
                       </button>
-                    );
-                  })}
-                </div>
+                    ))}
+                  </div>
 
-                {/* Form Content */}
-                <div className="p-4 md:p-6">
-                  {activeTab === 'flights' && (
+                  {/* Round Trip & One Way */}
+                  {(flightType === 'roundtrip' || flightType === 'oneway') && (
                     <div className="space-y-4">
-                      {/* From and To Fields */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             From
                           </label>
-                          <div className="relative text-sm">
+                          <div className="relative">
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
@@ -98,7 +136,7 @@ export default function TravelBooking() {
                               value={flightData.from}
                               onChange={handleFlightChange}
                               placeholder="Lagos (LOS)"
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
+                              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
                             />
                           </div>
                         </div>
@@ -106,7 +144,7 @@ export default function TravelBooking() {
                           <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             To
                           </label>
-                          <div className="relative text-sm">
+                          <div className="relative">
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                             <input
                               type="text"
@@ -114,14 +152,13 @@ export default function TravelBooking() {
                               value={flightData.to}
                               onChange={handleFlightChange}
                               placeholder="London (LHR)"
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-black"
+                              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
                             />
                           </div>
                         </div>
                       </div>
 
-                      {/* Date Fields */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-black">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1.5">
                             Departure Date
@@ -133,476 +170,272 @@ export default function TravelBooking() {
                               name="departureDate"
                               value={flightData.departureDate}
                               onChange={handleFlightChange}
-                              className="w-full text-black pl-11 text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
+                              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
                             />
                           </div>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Return Date
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="date"
-                              name="returnDate"
-                              value={flightData.returnDate}
-                              onChange={handleFlightChange}
-                              className="w-full pl-11 text-black text-sm pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
+                        {flightType === 'roundtrip' && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                              Return Date
+                            </label>
+                            <div className="relative">
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                              <input
+                                type="date"
+                                name="returnDate"
+                                value={flightData.returnDate}
+                                onChange={handleFlightChange}
+                                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                              />
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
 
-                      {/* Search Button */}
-                      <Link href="/flights/available">
-                        <button 
-                          onClick={handleSearchFlights}
-                          className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm"
-                        >
-                          <Search size={20} />
-                          Search Flights
-                        </button>
-                      </Link>
-                    </div>
-                  )}
-
-                  {activeTab === 'hotels' && (
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Destination
-                          </label>
-                          <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="text"
-                              name="destination"
-                              value={hotelData.destination}
-                              onChange={handleHotelChange}
-                              placeholder="Enter city or hotel name"
-                              className="w-full pl-11 text-black pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-900 mb-1.5">
-                            Guests
-                          </label>
-                          <input
-                            type="number"
-                            name="guests"
-                            value={hotelData.guests}
-                            onChange={handleHotelChange}
-                            placeholder="Number of guests"
-                            className="w-full px-4 py-2.5 text-black border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-black">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Check-in Date
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="date"
-                              name="checkInDate"
-                              value={hotelData.checkInDate}
-                              onChange={handleHotelChange}
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Check-out Date
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="date"
-                              name="checkOutDate"
-                              value={hotelData.checkOutDate}
-                              onChange={handleHotelChange}
-                              className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <button className="w-full text-sm bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                      <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
                         <Search size={20} />
-                        Search Hotels
+                        Search Flights
                       </button>
                     </div>
                   )}
 
-                  {activeTab === 'cars' && (
+                  {/* Multi City */}
+                  {flightType === 'multicity' && (
                     <div className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Pick-up Location
-                          </label>
-                          <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="text"
-                              name="pickupLocation"
-                              value={carData.pickupLocation}
-                              onChange={handleCarChange}
-                              placeholder="Enter location"
-                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
+                      {flightData.multicity.map((segment, index) => (
+                        <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-3">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-medium text-gray-700">Segment {index + 1}</h4>
+                            {flightData.multicity.length > 1 && (
+                              <button
+                                onClick={() => removeMulticitySegment(index)}
+                                className="text-red-500 hover:text-red-700 text-sm font-medium"
+                              >
+                                Remove
+                              </button>
+                            )}
                           </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Drop-off Location
-                          </label>
-                          <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="text"
-                              name="dropoffLocation"
-                              value={carData.dropoffLocation}
-                              onChange={handleCarChange}
-                              placeholder="Enter location"
-                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Pick-up Date
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="date"
-                              name="pickupDate"
-                              value={carData.pickupDate}
-                              onChange={handleCarChange}
-                              className="w-full text-black text-sm pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                From
+                              </label>
+                              <div className="relative">
+                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                <input
+                                  type="text"
+                                  value={segment.from}
+                                  onChange={(e) => handleMulticityChange(index, 'from', e.target.value)}
+                                  placeholder="Departure city"
+                                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                To
+                              </label>
+                              <div className="relative">
+                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                <input
+                                  type="text"
+                                  value={segment.to}
+                                  onChange={(e) => handleMulticityChange(index, 'to', e.target.value)}
+                                  placeholder="Arrival city"
+                                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                                />
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                                Date
+                              </label>
+                              <div className="relative">
+                                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                                <input
+                                  type="date"
+                                  value={segment.date}
+                                  onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
+                                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                            Drop-off Date
-                          </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                            <input
-                              type="date"
-                              name="dropoffDate"
-                              value={carData.dropoffDate}
-                              onChange={handleCarChange}
-                              className="w-full text-sm text-black pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-transparent outline-none placeholder:text-black"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                      ))}
 
-                      <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-sm text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                      <button
+                        onClick={addMulticitySegment}
+                        className="w-full border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-50 font-semibold py-2.5 rounded-lg transition-colors"
+                      >
+                        + Add Another Segment
+                      </button>
+
+                      <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
                         <Search size={20} />
-                        Search Cars
+                        Search Flights
                       </button>
                     </div>
                   )}
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              )}
 
-      {/* Mobile Section */}
-      <div className="md:hidden bg-gradient-to-b from-slate-50 to-white min-h-screen px-3 py-6" style={{ fontFamily: 'var(--font-poppins)' }}>
-        <div className="max-w-md mx-auto space-y-4">
-          {/* Tab Navigation */}
-          <div className="flex gap-2 bg-white rounded-xl p-1 shadow-sm">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 rounded-lg transition-all font-medium ${
-                    activeTab === tab.id
-                      ? 'bg-cyan-500 text-white shadow-md'
-                      : 'text-gray-600'
-                  }`}
-                >
-                  <Icon size={20} />
-                  <span className="text-xs">{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Flights Section */}
-          {activeTab === 'flights' && (
-            <div className="space-y-3 ">
-              <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
-                {/* From */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    From
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="text"
-                      name="from"
-                      value={flightData.from}
-                      onChange={handleFlightChange}
-                      placeholder="Lagos (LOS)"
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
+              {activeTab === 'hotels' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Destination
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="text"
+                          name="destination"
+                          value={hotelData.destination}
+                          onChange={handleHotelChange}
+                          placeholder="Enter city or hotel name"
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Guests
+                      </label>
+                      <input
+                        type="number"
+                        name="guests"
+                        value={hotelData.guests}
+                        onChange={handleHotelChange}
+                        placeholder="Number of guests"
+                        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* To */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    To
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="text"
-                      name="to"
-                      value={flightData.to}
-                      onChange={handleFlightChange}
-                      placeholder="London (LHR)"
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Check-in Date
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="date"
+                          name="checkInDate"
+                          value={hotelData.checkInDate}
+                          onChange={handleHotelChange}
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Check-out Date
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="date"
+                          name="checkOutDate"
+                          value={hotelData.checkOutDate}
+                          onChange={handleHotelChange}
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                {/* Departure Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Departure
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="departureDate"
-                      value={flightData.departureDate}
-                      onChange={handleFlightChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Return Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Return
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="returnDate"
-                      value={flightData.returnDate}
-                      onChange={handleFlightChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                <Link href="/flights/available">
-                  <button 
-                    onClick={handleSearchFlights}
-                    className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95"
-                  >
-                    <Search size={18} />
-                    Search Flights
+                  <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
+                    <Search size={20} />
+                    Search Hotels
                   </button>
-                </Link>
-              </div>
+                </div>
+              )}
+
+              {activeTab === 'cars' && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Pick-up Location
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="text"
+                          name="pickupLocation"
+                          value={carData.pickupLocation}
+                          onChange={handleCarChange}
+                          placeholder="Enter location"
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Drop-off Location
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="text"
+                          name="dropoffLocation"
+                          value={carData.dropoffLocation}
+                          onChange={handleCarChange}
+                          placeholder="Enter location"
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700 placeholder:text-gray-500"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Pick-up Date
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="date"
+                          name="pickupDate"
+                          value={carData.pickupDate}
+                          onChange={handleCarChange}
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                        Drop-off Date
+                      </label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                        <input
+                          type="date"
+                          name="dropoffDate"
+                          value={carData.dropoffDate}
+                          onChange={handleCarChange}
+                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-gray-700"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
+                    <Search size={20} />
+                    Search Cars
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-
-          {/* Hotels Section */}
-          {activeTab === 'hotels' && (
-            <div className="space-y-3">
-              <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
-                {/* Destination */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Destination
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="text"
-                      name="destination"
-                      value={hotelData.destination}
-                      onChange={handleHotelChange}
-                      placeholder="City or hotel name"
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Guests */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Guests
-                  </label>
-                  <input
-                    type="number"
-                    name="guests"
-                    value={hotelData.guests}
-                    onChange={handleHotelChange}
-                    placeholder="Number of guests"
-                    className="w-full text-black px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                  />
-                </div>
-
-                {/* Check-in Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Check-in
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="checkInDate"
-                      value={hotelData.checkInDate}
-                      onChange={handleHotelChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Check-out Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Check-out
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="checkOutDate"
-                      value={hotelData.checkOutDate}
-                      onChange={handleHotelChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                <button className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
-                  <Search size={18} />
-                  Search Hotels
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Cars Section */}
-          {activeTab === 'cars' && (
-            <div className="space-y-3">
-              <div className="bg-white rounded-xl shadow-sm p-4 space-y-4">
-                {/* Pick-up Location */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Pick-up
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="text"
-                      name="pickupLocation"
-                      value={carData.pickupLocation}
-                      onChange={handleCarChange}
-                      placeholder="Enter location"
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Drop-off Location */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Drop-off
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="text"
-                      name="dropoffLocation"
-                      value={carData.dropoffLocation}
-                      onChange={handleCarChange}
-                      placeholder="Enter location"
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Pick-up Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Pick-up Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="pickupDate"
-                      value={carData.pickupDate}
-                      onChange={handleCarChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                {/* Drop-off Date */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-2 uppercase tracking-wide">
-                    Drop-off Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-500" size={18} />
-                    <input
-                      type="date"
-                      name="dropoffDate"
-                      value={carData.dropoffDate}
-                      onChange={handleCarChange}
-                      className="w-full text-black pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent outline-none text-sm placeholder:text-black"
-                    />
-                  </div>
-                </div>
-
-                <button className="w-full text-white bg-cyan-500 hover:bg-cyan-600 font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md active:scale-95">
-                  <Search size={18} />
-                  Search Cars
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Quick Tips */}
-          <div className="bg-blue-50 rounded-xl p-4 mt-6">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">💡 Tip</h3>
-            <p className="text-xs text-blue-800">Book in advance for better prices and more options</p>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
