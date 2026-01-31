@@ -494,8 +494,8 @@ export default function Choose() {
 
       {/* Mobile Layout */}
       <div className="md:hidden">
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          {/* Mobile Tabs - All three on one line */}
           <div className="flex border-b border-gray-200">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -503,13 +503,13 @@ export default function Choose() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 flex flex-col items-center justify-center gap-1 px-2 py-1 font-medium transition-all text-xs ${
+                  className={`flex-1 flex flex-col items-center justify-center gap-1 px-2 py-3 font-medium transition-all text-xs ${
                     activeTab === tab.id
                       ? 'bg-cyan-500 text-white'
                       : 'bg-white text-gray-600 hover:bg-gray-50'
                   }`}
                 >
-                  <Icon size={14} />
+                  <Icon size={16} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -581,7 +581,7 @@ export default function Choose() {
                       </div>
                     </div>
 
-                   <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
                           Departure Date
