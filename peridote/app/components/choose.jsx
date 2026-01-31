@@ -610,14 +610,14 @@ export default function Choose() {
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
                           {flightType === 'roundtrip' ? 'Departure Date' : 'Travel Date'}
                         </label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                        <div className="relative min-w-0">
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                           <input
                             type="date"
                             name="departureDate"
                             value={flightData.departureDate}
                             onChange={handleFlightChange}
-                            className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                            className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                           />
                         </div>
                       </div>
@@ -626,14 +626,14 @@ export default function Choose() {
                           <label className="block text-xs font-medium text-gray-700 mb-1.5">
                             Return Date
                           </label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                          <div className="relative min-w-0">
+                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                             <input
                               type="date"
                               name="returnDate"
                               value={flightData.returnDate}
                               onChange={handleFlightChange}
-                              className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                              className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                             />
                           </div>
                         </div>
@@ -732,13 +732,13 @@ export default function Choose() {
                             <label className="block text-xs font-medium text-gray-700 mb-1.5">
                               Date
                             </label>
-                            <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                            <div className="relative min-w-0">
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                               <input
                                 type="date"
                                 value={segment.date}
                                 onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
-                                className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                                className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                               />
                             </div>
                           </div>
@@ -803,14 +803,14 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Check-in Date
                     </label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                    <div className="relative min-w-0">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                       <input
                         type="date"
                         name="checkInDate"
                         value={hotelData.checkInDate}
                         onChange={handleHotelChange}
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -818,14 +818,14 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Check-out Date
                     </label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                    <div className="relative min-w-0">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                       <input
                         type="date"
                         name="checkOutDate"
                         value={hotelData.checkOutDate}
                         onChange={handleHotelChange}
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -878,14 +878,14 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Pick-up Date
                     </label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                    <div className="relative min-w-0">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                       <input
                         type="date"
                         name="pickupDate"
                         value={carData.pickupDate}
                         onChange={handleCarChange}
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -893,14 +893,14 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Drop-off Date
                     </label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                    <div className="relative min-w-0">
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
                       <input
                         type="date"
                         name="dropoffDate"
                         value={carData.dropoffDate}
                         onChange={handleCarChange}
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
