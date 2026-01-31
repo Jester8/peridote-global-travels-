@@ -173,6 +173,7 @@ export default function Choose() {
                     </div>
                   </div>
 
+                  {/* Date inputs side by side */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -206,8 +207,26 @@ export default function Choose() {
                         </div>
                       </div>
                     )}
+                    {flightType === 'oneway' && (
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">
+                          Travel Date
+                        </label>
+                        <div className="relative">
+                          <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                          <input
+                            type="date"
+                            name="departureDate"
+                            value={flightData.departureDate}
+                            onChange={handleFlightChange}
+                            className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
 
+                  {/* Passengers and Class side by side */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -337,6 +356,7 @@ export default function Choose() {
 
           {activeTab === 'hotels' && (
             <div className="space-y-3">
+              {/* Hotels: Destination and Guests side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -373,6 +393,7 @@ export default function Choose() {
                 </div>
               </div>
 
+              {/* Hotels: Check-in and Check-out dates side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -415,6 +436,7 @@ export default function Choose() {
 
           {activeTab === 'cars' && (
             <div className="space-y-3">
+              {/* Cars: Pickup and Dropoff locations side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -450,6 +472,7 @@ export default function Choose() {
                 </div>
               </div>
 
+              {/* Cars: Pickup and Dropoff dates side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -516,8 +539,8 @@ export default function Choose() {
             })}
           </div>
 
-          {/* Mobile Form Content - Scrollable for flights */}
-          <div className={`p-4 ${activeTab === 'flights' ? 'max-h-[300px] overflow-y-auto' : ''}`}>
+          {/* Mobile Form Content */}
+          <div className={`p-4 ${activeTab === 'flights' ? 'max-h-[350px] overflow-y-auto' : ''}`}>
             {activeTab === 'flights' && (
               <div className="space-y-4">
                 {/* Flight Type Selector */}
@@ -526,7 +549,7 @@ export default function Choose() {
                     <button
                       key={type.id}
                       onClick={() => setFlightType(type.id)}
-                      className={`px-2 py-1 rounded-md font-medium text-xs whitespace-nowrap transition-all ${
+                      className={`px-3 py-1.5 rounded-md font-medium text-xs whitespace-nowrap transition-all ${
                         flightType === type.id
                           ? 'bg-cyan-500 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -552,7 +575,7 @@ export default function Choose() {
                             value={flightData.from}
                             onChange={handleFlightChange}
                             placeholder="Lagos (LOS)"
-                            className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                            className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                           />
                         </div>
                       </div>
@@ -568,11 +591,11 @@ export default function Choose() {
                             value={flightData.to}
                             onChange={handleFlightChange}
                             placeholder="London (LHR)"
-                            className="w-full pl-9 pr-9 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                            className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                           />
                           <button
                             onClick={swapCities}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded transition-colors"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-gray-100 rounded-full transition-colors"
                             aria-label="Swap cities"
                           >
                             <ArrowRightLeft size={14} className="text-gray-600" />
@@ -581,10 +604,11 @@ export default function Choose() {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
+                    {/* Mobile: Date inputs side by side with spacing */}
+                    <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          Departure Date
+                          {flightType === 'roundtrip' ? 'Departure' : 'Travel Date'}
                         </label>
                         <div className="relative">
                           <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
@@ -593,7 +617,7 @@ export default function Choose() {
                             name="departureDate"
                             value={flightData.departureDate}
                             onChange={handleFlightChange}
-                           className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                            className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                           />
                         </div>
                       </div>
@@ -609,13 +633,14 @@ export default function Choose() {
                               name="returnDate"
                               value={flightData.returnDate}
                               onChange={handleFlightChange}
-                               className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                              className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                             />
                           </div>
                         </div>
                       )}
                     </div>
 
+                    {/* Mobile: Passengers and Class side by side */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -629,7 +654,7 @@ export default function Choose() {
                             value={flightData.passengers}
                             onChange={handleFlightChange}
                             min="1"
-                            className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                            className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                           />
                         </div>
                       </div>
@@ -642,7 +667,7 @@ export default function Choose() {
                             name="class"
                             value={flightData.class}
                             onChange={handleFlightChange}
-                            className="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 appearance-none cursor-pointer text-xs"
+                            className="w-full pl-3 pr-8 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 appearance-none cursor-pointer text-xs"
                           >
                             <option>Economy</option>
                             <option>Premium Economy</option>
@@ -684,7 +709,7 @@ export default function Choose() {
                                 value={segment.from}
                                 onChange={(e) => handleMulticityChange(index, 'from', e.target.value)}
                                 placeholder="Departure city"
-                                className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                                className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                               />
                             </div>
                           </div>
@@ -699,7 +724,7 @@ export default function Choose() {
                                 value={segment.to}
                                 onChange={(e) => handleMulticityChange(index, 'to', e.target.value)}
                                 placeholder="Arrival city"
-                                className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                                className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                               />
                             </div>
                           </div>
@@ -713,7 +738,7 @@ export default function Choose() {
                                 type="date"
                                 value={segment.date}
                                 onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
-                                className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                                className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                               />
                             </div>
                           </div>
@@ -739,7 +764,8 @@ export default function Choose() {
 
             {activeTab === 'hotels' && (
               <div className="space-y-4">
-                <div className="space-y-3">
+                {/* Mobile Hotels: Destination and Guests side by side */}
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Destination
@@ -752,7 +778,7 @@ export default function Choose() {
                         value={hotelData.destination}
                         onChange={handleHotelChange}
                         placeholder="Enter city or hotel name"
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -769,12 +795,13 @@ export default function Choose() {
                         onChange={handleHotelChange}
                         placeholder="Number of guests"
                         min="1"
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
                 </div>
 
+                {/* Mobile Hotels: Check-in and Check-out dates side by side */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -787,7 +814,7 @@ export default function Choose() {
                         name="checkInDate"
                         value={hotelData.checkInDate}
                         onChange={handleHotelChange}
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -802,7 +829,7 @@ export default function Choose() {
                         name="checkOutDate"
                         value={hotelData.checkOutDate}
                         onChange={handleHotelChange}
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -817,7 +844,8 @@ export default function Choose() {
 
             {activeTab === 'cars' && (
               <div className="space-y-4">
-                <div className="space-y-3">
+                {/* Mobile Cars: Pickup and Dropoff locations side by side */}
+                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Pick-up Location
@@ -830,7 +858,7 @@ export default function Choose() {
                         value={carData.pickupLocation}
                         onChange={handleCarChange}
                         placeholder="Enter location"
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -846,12 +874,13 @@ export default function Choose() {
                         value={carData.dropoffLocation}
                         onChange={handleCarChange}
                         placeholder="Enter location"
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
                 </div>
 
+                {/* Mobile Cars: Pickup and Dropoff dates side by side */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -864,7 +893,7 @@ export default function Choose() {
                         name="pickupDate"
                         value={carData.pickupDate}
                         onChange={handleCarChange}
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
@@ -879,7 +908,7 @@ export default function Choose() {
                         name="dropoffDate"
                         value={carData.dropoffDate}
                         onChange={handleCarChange}
-                        className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
                       />
                     </div>
                   </div>
