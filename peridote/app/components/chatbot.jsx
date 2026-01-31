@@ -398,7 +398,7 @@ const Chatbot = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about flights, hotels, cars, policies..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-sm"
+                className="flex-1 px-2 py-3 border border-gray-300 rounded-lg focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-sm"
                 disabled={isTyping}
               />
               <button
@@ -410,7 +410,7 @@ const Chatbot = () => {
                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}
               >
-                <Send size={18} />
+                <Send size={15} />
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-2 text-center">
