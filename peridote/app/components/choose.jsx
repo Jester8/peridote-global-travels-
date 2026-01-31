@@ -7,7 +7,7 @@ const dateInputStyles = `
     input[type="date"] {
       font-size: 16px !important;
       padding: 8px 8px !important;
-      width: 100% !important;
+      width: 90% !important;
       box-sizing: border-box !important;
     }
     
