@@ -593,7 +593,7 @@ export default function Choose() {
                             name="departureDate"
                             value={flightData.departureDate}
                             onChange={handleFlightChange}
-                            className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                           className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                           />
                         </div>
                       </div>
@@ -609,7 +609,7 @@ export default function Choose() {
                               name="returnDate"
                               value={flightData.returnDate}
                               onChange={handleFlightChange}
-                              className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                               className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
                             />
                           </div>
                         </div>
