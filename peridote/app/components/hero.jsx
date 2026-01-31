@@ -14,7 +14,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative w-full h-[530px] sm:h-[900px] md:h-[500px] lg:h-[550px] overflow-hidden">
+    <section className="relative w-full h-[560px] sm:h-[900px] md:h-[500px] lg:h-[550px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
