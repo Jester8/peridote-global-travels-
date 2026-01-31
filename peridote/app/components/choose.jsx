@@ -1,32 +1,131 @@
 "use client";
 import React, { useState } from 'react';
-import { Plane, Building2, Car, MapPin, Calendar, Search, ArrowRightLeft, Users, ChevronDown } from 'lucide-react';
+import { Plane, Building2, Car, MapPin, Calendar, Search, ArrowRightLeft, Users, ChevronDown, X } from 'lucide-react';
 
-const dateInputStyles = `
-  @media (max-width: 768px) {
-    input[type="date"] {
-      font-size: 16px !important;
-      padding: 8px 8px !important;
-      width: 90% !important;
-      box-sizing: border-box !important;
-    }
-    
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-    }
+// Simple Date Picker Component
+function SimpleDatePicker({ value, onChange, label }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [month, setMonth] = useState(value ? new Date(value) : new Date());
+
+  const getDaysInMonth = (date) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  const handleDayClick = (day) => {
+    const newDate = new Date(month.getFullYear(), month.getMonth(), day);
+    const dateString = newDate.toISOString().split('T')[0];
+    onChange(dateString);
+    setIsOpen(false);
+  };
+
+  const daysInMonth = getDaysInMonth(month);
+  const firstDay = getFirstDayOfMonth(month);
+  const days = [];
+
+  for (let i = 0; i < firstDay; i++) {
+    days.push(null);
   }
-`;
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push(i);
+  }
+
+  const monthName = month.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  return (
+    <div className="relative">
+      <label className="block text-xs font-medium text-gray-700 mb-1.5">
+        {label}
+      </label>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-3 py-2.5 border border-gray-300 rounded-md bg-white text-left flex items-center justify-between text-xs text-gray-700 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500"
+      >
+        <span>{value ? formatDate(value) : 'Select date'}</span>
+        <Calendar size={16} className="text-gray-400" />
+      </button>
+
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50">
+          <div className="bg-white rounded-t-xl md:rounded-lg w-full md:w-96 p-4 md:p-6 max-h-96 overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-semibold text-sm text-gray-800">{monthName}</h3>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 hover:bg-gray-100 rounded transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))}
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+              >
+                ← Prev
+              </button>
+              <button
+                onClick={() => setMonth(new Date())}
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+              >
+                Today
+              </button>
+              <button
+                onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))}
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+              >
+                Next →
+              </button>
+            </div>
+
+            <div className="grid grid-cols-7 gap-1 mb-2">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                <div key={day} className="text-center text-xs font-medium text-gray-600 py-2">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-7 gap-1">
+              {days.map((day, index) => (
+                <button
+                  key={index}
+                  onClick={() => day && handleDayClick(day)}
+                  disabled={!day}
+                  className={`aspect-square flex items-center justify-center text-xs rounded font-medium transition-all ${
+                    !day
+                      ? 'text-gray-300'
+                      : value === new Date(month.getFullYear(), month.getMonth(), day).toISOString().split('T')[0]
+                      ? 'bg-cyan-500 text-white'
+                      : 'hover:bg-gray-100 text-gray-700'
+                  }`}
+                >
+                  {day}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Choose() {
-  // Inject styles
-  React.useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = dateInputStyles;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
   const [activeTab, setActiveTab] = useState('flights');
   const [flightType, setFlightType] = useState('roundtrip');
   const [flightData, setFlightData] = useState({
@@ -197,56 +296,26 @@ export default function Choose() {
                     </div>
                   </div>
 
-                  {/* Date inputs side by side */}
+                  {/* Date inputs side by side - Desktop */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1">
-                        Departure Date
-                      </label>
-                      <div className="relative">
-                        <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                        <input
-                          type="date"
-                          name="departureDate"
-                          value={flightData.departureDate}
-                          onChange={handleFlightChange}
-                          className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                        />
-                      </div>
-                    </div>
+                    <SimpleDatePicker 
+                      value={flightData.departureDate} 
+                      onChange={(date) => setFlightData(prev => ({ ...prev, departureDate: date }))}
+                      label="Departure Date"
+                    />
                     {flightType === 'roundtrip' && (
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">
-                          Return Date
-                        </label>
-                        <div className="relative">
-                          <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                          <input
-                            type="date"
-                            name="returnDate"
-                            value={flightData.returnDate}
-                            onChange={handleFlightChange}
-                            className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                          />
-                        </div>
-                      </div>
+                      <SimpleDatePicker 
+                        value={flightData.returnDate} 
+                        onChange={(date) => setFlightData(prev => ({ ...prev, returnDate: date }))}
+                        label="Return Date"
+                      />
                     )}
                     {flightType === 'oneway' && (
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">
-                          Travel Date
-                        </label>
-                        <div className="relative">
-                          <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                          <input
-                            type="date"
-                            name="departureDate"
-                            value={flightData.departureDate}
-                            onChange={handleFlightChange}
-                            className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                          />
-                        </div>
-                      </div>
+                      <SimpleDatePicker 
+                        value={flightData.departureDate} 
+                        onChange={(date) => setFlightData(prev => ({ ...prev, departureDate: date }))}
+                        label="Travel Date"
+                      />
                     )}
                   </div>
 
@@ -417,38 +486,18 @@ export default function Choose() {
                 </div>
               </div>
 
-              {/* Hotels: Check-in and Check-out dates side by side */}
+              {/* Hotels: Check-in and Check-out dates - Desktop */}
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Check-in Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                    <input
-                      type="date"
-                      name="checkInDate"
-                      value={hotelData.checkInDate}
-                      onChange={handleHotelChange}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Check-out Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                    <input
-                      type="date"
-                      name="checkOutDate"
-                      value={hotelData.checkOutDate}
-                      onChange={handleHotelChange}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                </div>
+                <SimpleDatePicker 
+                  value={hotelData.checkInDate} 
+                  onChange={(date) => setHotelData(prev => ({ ...prev, checkInDate: date }))}
+                  label="Check-in Date"
+                />
+                <SimpleDatePicker 
+                  value={hotelData.checkOutDate} 
+                  onChange={(date) => setHotelData(prev => ({ ...prev, checkOutDate: date }))}
+                  label="Check-out Date"
+                />
               </div>
 
               <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2.5 rounded-md transition-all flex items-center justify-center gap-1.5 shadow hover:shadow-md text-xs">
@@ -496,38 +545,18 @@ export default function Choose() {
                 </div>
               </div>
 
-              {/* Cars: Pickup and Dropoff dates side by side */}
+              {/* Cars: Pickup and Dropoff dates - Desktop */}
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Pick-up Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                    <input
-                      type="date"
-                      name="pickupDate"
-                      value={carData.pickupDate}
-                      onChange={handleCarChange}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Drop-off Date
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
-                    <input
-                      type="date"
-                      name="dropoffDate"
-                      value={carData.dropoffDate}
-                      onChange={handleCarChange}
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                </div>
+                <SimpleDatePicker 
+                  value={carData.pickupDate} 
+                  onChange={(date) => setCarData(prev => ({ ...prev, pickupDate: date }))}
+                  label="Pick-up Date"
+                />
+                <SimpleDatePicker 
+                  value={carData.dropoffDate} 
+                  onChange={(date) => setCarData(prev => ({ ...prev, dropoffDate: date }))}
+                  label="Drop-off Date"
+                />
               </div>
 
               <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-2.5 rounded-md transition-all flex items-center justify-center gap-1.5 shadow hover:shadow-md text-xs">
@@ -628,33 +657,19 @@ export default function Choose() {
                       </div>
                     </div>
 
-                    {/* Mobile: Date inputs stacked vertically */}
+                    {/* Mobile: Date inputs with custom picker */}
                     <div className="space-y-3">
-                      <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          {flightType === 'roundtrip' ? 'Departure Date' : 'Travel Date'}
-                        </label>
-                        <input
-                          type="date"
-                          name="departureDate"
-                          value={flightData.departureDate}
-                          onChange={handleFlightChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                        />
-                      </div>
+                      <SimpleDatePicker 
+                        value={flightData.departureDate} 
+                        onChange={(date) => setFlightData(prev => ({ ...prev, departureDate: date }))}
+                        label={flightType === 'roundtrip' ? 'Departure Date' : 'Travel Date'}
+                      />
                       {flightType === 'roundtrip' && (
-                        <div>
-                          <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                            Return Date
-                          </label>
-                          <input
-                            type="date"
-                            name="returnDate"
-                            value={flightData.returnDate}
-                            onChange={handleFlightChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                          />
-                        </div>
+                        <SimpleDatePicker 
+                          value={flightData.returnDate} 
+                          onChange={(date) => setFlightData(prev => ({ ...prev, returnDate: date }))}
+                          label="Return Date"
+                        />
                       )}
                     </div>
 
@@ -746,17 +761,11 @@ export default function Choose() {
                               />
                             </div>
                           </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                              Date
-                            </label>
-                            <input
-                              type="date"
-                              value={segment.date}
-                              onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                            />
-                          </div>
+                          <SimpleDatePicker 
+                            value={segment.date} 
+                            onChange={(date) => handleMulticityChange(index, 'date', date)}
+                            label="Date"
+                          />
                         </div>
                       </div>
                     ))}
@@ -814,30 +823,16 @@ export default function Choose() {
                       />
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                      Check-in Date
-                    </label>
-                    <input
-                      type="date"
-                      name="checkInDate"
-                      value={hotelData.checkInDate}
-                      onChange={handleHotelChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                      Check-out Date
-                    </label>
-                    <input
-                      type="date"
-                      name="checkOutDate"
-                      value={hotelData.checkOutDate}
-                      onChange={handleHotelChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
+                  <SimpleDatePicker 
+                    value={hotelData.checkInDate} 
+                    onChange={(date) => setHotelData(prev => ({ ...prev, checkInDate: date }))}
+                    label="Check-in Date"
+                  />
+                  <SimpleDatePicker 
+                    value={hotelData.checkOutDate} 
+                    onChange={(date) => setHotelData(prev => ({ ...prev, checkOutDate: date }))}
+                    label="Check-out Date"
+                  />
                 </div>
 
                 <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 rounded-md transition-all flex items-center justify-center gap-2 shadow hover:shadow-md text-xs mt-2">
@@ -883,30 +878,16 @@ export default function Choose() {
                       />
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                      Pick-up Date
-                    </label>
-                    <input
-                      type="date"
-                      name="pickupDate"
-                      value={carData.pickupDate}
-                      onChange={handleCarChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                      Drop-off Date
-                    </label>
-                    <input
-                      type="date"
-                      name="dropoffDate"
-                      value={carData.dropoffDate}
-                      onChange={handleCarChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                    />
-                  </div>
+                  <SimpleDatePicker 
+                    value={carData.pickupDate} 
+                    onChange={(date) => setCarData(prev => ({ ...prev, pickupDate: date }))}
+                    label="Pick-up Date"
+                  />
+                  <SimpleDatePicker 
+                    value={carData.dropoffDate} 
+                    onChange={(date) => setCarData(prev => ({ ...prev, dropoffDate: date }))}
+                    label="Drop-off Date"
+                  />
                 </div>
 
                 <button className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 rounded-md transition-all flex items-center justify-center gap-2 shadow hover:shadow-md text-xs mt-2">
