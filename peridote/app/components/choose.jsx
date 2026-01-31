@@ -604,11 +604,11 @@ export default function Choose() {
                       </div>
                     </div>
 
-                    {/* Mobile: Date inputs side by side with spacing */}
-                    <div className="grid grid-cols-2 gap-3">
+                    {/* Mobile: Date inputs stacked vertically */}
+                    <div className="space-y-3">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
-                          {flightType === 'roundtrip' ? 'Departure' : 'Travel Date'}
+                          {flightType === 'roundtrip' ? 'Departure Date' : 'Travel Date'}
                         </label>
                         <div className="relative">
                           <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
@@ -640,8 +640,8 @@ export default function Choose() {
                       )}
                     </div>
 
-                    {/* Mobile: Passengers and Class side by side */}
-                    <div className="grid grid-cols-2 gap-3">
+                    {/* Mobile: Passengers and Class stacked vertically */}
+                    <div className="space-y-3">
                       <div>
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
                           Passengers
@@ -764,8 +764,8 @@ export default function Choose() {
 
             {activeTab === 'hotels' && (
               <div className="space-y-4">
-                {/* Mobile Hotels: Destination and Guests side by side */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* Mobile Hotels: All fields stacked vertically */}
+                <div className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Destination
@@ -799,10 +799,6 @@ export default function Choose() {
                       />
                     </div>
                   </div>
-                </div>
-
-                {/* Mobile Hotels: Check-in and Check-out dates side by side */}
-                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Check-in Date
@@ -844,8 +840,8 @@ export default function Choose() {
 
             {activeTab === 'cars' && (
               <div className="space-y-4">
-                {/* Mobile Cars: Pickup and Dropoff locations side by side */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* Mobile Cars: All fields stacked vertically */}
+                <div className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Pick-up Location
@@ -878,10 +874,6 @@ export default function Choose() {
                       />
                     </div>
                   </div>
-                </div>
-
-                {/* Mobile Cars: Pickup and Dropoff dates side by side */}
-                <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Pick-up Date
