@@ -2,7 +2,31 @@
 import React, { useState } from 'react';
 import { Plane, Building2, Car, MapPin, Calendar, Search, ArrowRightLeft, Users, ChevronDown } from 'lucide-react';
 
+const dateInputStyles = `
+  @media (max-width: 768px) {
+    input[type="date"] {
+      font-size: 16px !important;
+      padding: 8px 8px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
 export default function Choose() {
+  // Inject styles
+  React.useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = dateInputStyles;
+    document.head.appendChild(style);
+    return () => document.head.removeChild(style);
+  }, []);
   const [activeTab, setActiveTab] = useState('flights');
   const [flightType, setFlightType] = useState('roundtrip');
   const [flightData, setFlightData] = useState({
@@ -610,32 +634,26 @@ export default function Choose() {
                         <label className="block text-xs font-medium text-gray-700 mb-1.5">
                           {flightType === 'roundtrip' ? 'Departure Date' : 'Travel Date'}
                         </label>
-                        <div className="relative min-w-0">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                          <input
-                            type="date"
-                            name="departureDate"
-                            value={flightData.departureDate}
-                            onChange={handleFlightChange}
-                            className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                          />
-                        </div>
+                        <input
+                          type="date"
+                          name="departureDate"
+                          value={flightData.departureDate}
+                          onChange={handleFlightChange}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        />
                       </div>
                       {flightType === 'roundtrip' && (
                         <div>
                           <label className="block text-xs font-medium text-gray-700 mb-1.5">
                             Return Date
                           </label>
-                          <div className="relative min-w-0">
-                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                            <input
-                              type="date"
-                              name="returnDate"
-                              value={flightData.returnDate}
-                              onChange={handleFlightChange}
-                              className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                            />
-                          </div>
+                          <input
+                            type="date"
+                            name="returnDate"
+                            value={flightData.returnDate}
+                            onChange={handleFlightChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                          />
                         </div>
                       )}
                     </div>
@@ -732,15 +750,12 @@ export default function Choose() {
                             <label className="block text-xs font-medium text-gray-700 mb-1.5">
                               Date
                             </label>
-                            <div className="relative min-w-0">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                              <input
-                                type="date"
-                                value={segment.date}
-                                onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
-                                className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                              />
-                            </div>
+                            <input
+                              type="date"
+                              value={segment.date}
+                              onChange={(e) => handleMulticityChange(index, 'date', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                            />
                           </div>
                         </div>
                       </div>
@@ -803,31 +818,25 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Check-in Date
                     </label>
-                    <div className="relative min-w-0">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                      <input
-                        type="date"
-                        name="checkInDate"
-                        value={hotelData.checkInDate}
-                        onChange={handleHotelChange}
-                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                      />
-                    </div>
+                    <input
+                      type="date"
+                      name="checkInDate"
+                      value={hotelData.checkInDate}
+                      onChange={handleHotelChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                    />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Check-out Date
                     </label>
-                    <div className="relative min-w-0">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                      <input
-                        type="date"
-                        name="checkOutDate"
-                        value={hotelData.checkOutDate}
-                        onChange={handleHotelChange}
-                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                      />
-                    </div>
+                    <input
+                      type="date"
+                      name="checkOutDate"
+                      value={hotelData.checkOutDate}
+                      onChange={handleHotelChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                    />
                   </div>
                 </div>
 
@@ -878,31 +887,25 @@ export default function Choose() {
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Pick-up Date
                     </label>
-                    <div className="relative min-w-0">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                      <input
-                        type="date"
-                        name="pickupDate"
-                        value={carData.pickupDate}
-                        onChange={handleCarChange}
-                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                      />
-                    </div>
+                    <input
+                      type="date"
+                      name="pickupDate"
+                      value={carData.pickupDate}
+                      onChange={handleCarChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                    />
                   </div>
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
                       Drop-off Date
                     </label>
-                    <div className="relative min-w-0">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={14} />
-                      <input
-                        type="date"
-                        name="dropoffDate"
-                        value={carData.dropoffDate}
-                        onChange={handleCarChange}
-                        className="w-full pl-9 pr-2 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
-                      />
-                    </div>
+                    <input
+                      type="date"
+                      name="dropoffDate"
+                      value={carData.dropoffDate}
+                      onChange={handleCarChange}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                    />
                   </div>
                 </div>
 
