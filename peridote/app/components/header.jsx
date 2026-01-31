@@ -69,7 +69,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Desktop Header */}
-          <div className="hidden lg:block bg-gray-100 rounded-full mx-4 sm:mx-6 my-3 sm:my-4 px-6 sm:px-8 py-3 sm:py-4">
+          <div className="hidden lg:block  mx-4 sm:mx-6 my-3 sm:my-4 px-6 sm:px-8 py-3 sm:py-4">
             <div className="flex items-center justify-between">
               <Link href="/" className="flex-shrink-0 flex items-center gap-2">
                 <Image 
@@ -100,7 +100,7 @@ export default function Header() {
               <div className="flex items-center gap-3 lg:gap-4">
                 <button
                   onClick={() => setIsSignInOpen(true)}
-                  className="px-6 py-2 border-2 border-[#009FE3] text-[#009FE3] rounded-full font-light hover:bg-blue-50 transition-all duration-300 text-sm"
+                  className="px-6 py-2 border-1 border-[#009FE3] text-[#009FE3] rounded-full font-light hover:bg-blue-50 transition-all duration-300 text-sm"
                   style={{ fontFamily: 'var(--font-poppins)' }}
                 >
                   Sign In

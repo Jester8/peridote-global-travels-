@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col bg-white ">
       <Header />
       <Hero />
-      <Choose />
+     
       <Why /> 
       <Service/>
       <Ready/>

@@ -1,121 +1,64 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import { Plane, Globe2, MapPin } from 'lucide-react'; 
+import Choose from './choose';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Hero() {
-  const [slideIn, setSlideIn] = useState(false);
+  const headingRef = useRef(null);
+  const subtitleRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setSlideIn(true), 300);
-    return () => clearTimeout(timer);
+    setIsVisible(true);
   }, []);
 
   return (
-    <section className="relative w-full bg-white overflow-hidden">
-    
-    
-      {/* Main Hero Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-4 lg:gap-8 py-6 sm:py-8 lg:py-12 lg:pr-20">
-          
-          {/* Left Content */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-center lg:ml-16">
-            <h1 
-              className="text-4xl sm:text-5xl lg:text-5xl font-medium text-black leading-tight mb-3"
-              style={{ fontFamily: 'var(--font-poppins)', fontWeight: 500 }}
-            >
-              Explore the world in style with{' '}
-              <span className="relative inline-block">
-                <span 
-                  className="font-bold bg-gradient-to-r from-[#009FE3] to-[#00587D] bg-clip-text text-transparent"
-                  style={{ fontWeight: 700 }}
-                >
-                  Peridote
-                </span>
-                <svg 
-                  className="absolute bottom-2 left-0 w-full h-1"
-                  viewBox="0 0 200 20"
-                  preserveAspectRatio="none"
-                >
-                  <path 
-                    d="M 0 20 Q 20 5, 100 10 T 200 10" 
-                    stroke="#FF6B5B" 
-                    strokeWidth="20" 
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </span>
-              .
-            </h1>
-
-        
-            <div
-              className={`block lg:hidden mb-4 transition-all duration-700 ease-in-out transform ${
-                slideIn ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-              }`}
-            >
-              <Image 
-                src="/her.png" 
-                alt="Travel with Peridote"
-                width={500}
-                height={600}
-                className="w-full h-auto object-contain"
-                priority
-              />
-            </div>
-
-            <p 
-              className="text-gray-600 text-base sm:text-md lg:text-md leading-relaxed mb-4 max-w-lg"
-              style={{ fontFamily: 'var(--font-poppins)', fontWeight: 500 }}
-            >
-              Your journey to seamless travel starts here. Premium flights, luxury hotels, and reliable car rentals.
-              Book premium flights, and explore the world with confidence.
-            </p>
-          </div>
-
-          {/* Right Image (Desktop only) */}
-          <div className="hidden lg:flex w-full lg:w-1/2 justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-lg">
-              <Image 
-                src="/her.png" 
-                alt="Travel with Peridote" 
-                width={500}
-                height={600}
-                className="w-full h-auto object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
+    <section className="relative w-full h-[500px] sm:h-[900px] md:h-[600px] lg:h-[650px] overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/hero.jpg"
+          alt="Airplane at sunset"
+          fill
+          priority
+          className="object-cover object-center"
+          quality={85}
+          sizes="100vw"
+        />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
       </div>
 
+      {/* Content Container */}
+      <div className="relative z-10 h-full flex flex-col justify-between max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+        {/* Hero Heading - Top */}
+        <div className="mb-3 sm:mb-4 md:mb-5">
+          <h1 
+            ref={headingRef}
+            className={`text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight max-w-2xl transition-all duration-1000 ease-out ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ fontFamily: 'var(--font-poppins)' }}
+          >
+            Make your travel wishlist, we'll do the rest
+          </h1>
+          <p 
+            ref={subtitleRef}
+            className={`text-white/90 text-xs sm:text-sm md:text-base lg:text-lg mt-1.5 sm:mt-2.5 md:mt-3.5 font-normal transition-all duration-1000 ease-out delay-300 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ fontFamily: 'var(--font-poppins)' }}
+          >
+            Special offers to suit your plan
+          </p>
+        </div>
 
-      <style jsx>{`
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(2deg); }
-        }
-        @keyframes float-medium {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-25px) rotate(-3deg); }
-        }
-        @keyframes float-fast {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-35px) rotate(4deg); }
-        }
-        .animate-float-slow {
-          animation: float-slow 6s ease-in-out infinite;
-        }
-        .animate-float-medium {
-          animation: float-medium 5s ease-in-out infinite;
-        }
-        .animate-float-fast {
-          animation: float-fast 4s ease-in-out infinite;
-        }
-      `}</style>
+      
+        <div className="w-full">
+          <Choose />
+        </div>
+      </div>
     </section>
   );
 }
