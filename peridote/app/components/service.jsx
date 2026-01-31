@@ -50,7 +50,7 @@ export default function Services() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-black mb-3">
             Our Premium Services
           </h2>
           <p className="text-gray-600 text-base md:text-lg">
