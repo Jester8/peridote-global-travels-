@@ -3,20 +3,25 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Plane, Building2, Car, MapPin, Calendar, Search, ArrowRightLeft, Users, ChevronDown, X, Loader, AlertCircle } from 'lucide-react';
 
+interface DatePickerProps {
+  value: string;
+  onChange: (date: string) => void;
+  label: string;
+}
 
-function SimpleDatePicker({ value, onChange, label }) {
+function SimpleDatePicker({ value, onChange, label }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [month, setMonth] = useState(value ? new Date(value) : new Date());
 
-  const getDaysInMonth = (date) => {
+  const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
-  const getFirstDayOfMonth = (date) => {
+  const getFirstDayOfMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -26,7 +31,7 @@ function SimpleDatePicker({ value, onChange, label }) {
     });
   };
 
-  const handleDayClick = (day) => {
+  const handleDayClick = (day: number) => {
     const newDate = new Date(month.getFullYear(), month.getMonth(), day);
     const dateString = newDate.toISOString().split('T')[0];
     onChange(dateString);
@@ -35,7 +40,7 @@ function SimpleDatePicker({ value, onChange, label }) {
 
   const daysInMonth = getDaysInMonth(month);
   const firstDay = getFirstDayOfMonth(month);
-  const days = [];
+  const days: (number | null)[] = [];
 
   for (let i = 0; i < firstDay; i++) {
     days.push(null);
@@ -53,9 +58,9 @@ function SimpleDatePicker({ value, onChange, label }) {
       </label>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-3 py-2.5 border border-gray-300 rounded-md bg-white text-left flex items-center justify-between text-xs text-gray-700 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500"
+        className="w-full px-3 py-2.5 border border-gray-300 rounded-md bg-white text-left flex items-center justify-between text-xs text-gray-900 focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500"
       >
-        <span>{value ? formatDate(value) : 'Select date'}</span>
+        <span className="text-gray-900">{value ? formatDate(value) : 'Select date'}</span>
         <Calendar size={16} className="text-gray-400" />
       </button>
 
@@ -63,31 +68,31 @@ function SimpleDatePicker({ value, onChange, label }) {
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/50">
           <div className="bg-white rounded-t-xl md:rounded-lg w-full md:w-96 p-4 md:p-6 max-h-96 overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-sm text-gray-800">{monthName}</h3>
+              <h3 className="font-semibold text-sm text-gray-900">{monthName}</h3>
               <button
                 onClick={() => setIsOpen(false)}
                 className="p-1 hover:bg-gray-100 rounded transition-colors"
               >
-                <X size={20} />
+                <X size={20} className="text-gray-900" />
               </button>
             </div>
 
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1))}
-                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors text-gray-900"
               >
                 ← Prev
               </button>
               <button
                 onClick={() => setMonth(new Date())}
-                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors text-gray-900"
               >
                 Today
               </button>
               <button
                 onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1))}
-                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                className="flex-1 px-2 py-1.5 text-xs font-medium bg-gray-100 hover:bg-gray-200 rounded transition-colors text-gray-900"
               >
                 Next →
               </button>
@@ -95,7 +100,7 @@ function SimpleDatePicker({ value, onChange, label }) {
 
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className="text-center text-xs font-medium text-gray-600 py-2">
+                <div key={day} className="text-center text-xs font-medium text-gray-700 py-2">
                   {day}
                 </div>
               ))}
@@ -112,7 +117,7 @@ function SimpleDatePicker({ value, onChange, label }) {
                       ? 'text-gray-300'
                       : value === new Date(month.getFullYear(), month.getMonth(), day).toISOString().split('T')[0]
                       ? 'bg-cyan-500 text-white'
-                      : 'hover:bg-gray-100 text-gray-700'
+                      : 'hover:bg-gray-100 text-gray-900'
                   }`}
                 >
                   {day}
@@ -160,7 +165,7 @@ export default function Choose() {
   ];
 
   // City to IATA code mapping
-  const cityToIATA = {
+  const cityToIATA: Record<string, string> = {
     'lagos': 'LOS',
     'london': 'LHR',
     'new york': 'JFK',
@@ -173,15 +178,15 @@ export default function Choose() {
     'mumbai': 'BOM',
   };
 
-  const getCityIATA = (city) => {
+  const getCityIATA = (city: string) => {
     const normalized = city.toLowerCase().trim();
     return cityToIATA[normalized] || normalized.substring(0, 3).toUpperCase();
   };
 
-  const handleFlightChange = (e) => {
+  const handleFlightChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFlightData(prev => ({ ...prev, [name]: value }));
-    setError(null); // Clear error when user starts typing
+    setError(null);
   };
 
   const swapCities = () => {
@@ -192,9 +197,9 @@ export default function Choose() {
     }));
   };
 
-  const handleMulticityChange = (index, field, value) => {
+  const handleMulticityChange = (index: number, field: string, value: string) => {
     const updated = [...flightData.multicity];
-    updated[index][field] = value;
+    updated[index] = { ...updated[index], [field]: value };
     setFlightData(prev => ({ ...prev, multicity: updated }));
   };
 
@@ -205,94 +210,88 @@ export default function Choose() {
     }));
   };
 
-  const removeMulticitySegment = (index) => {
+  const removeMulticitySegment = (index: number) => {
     setFlightData(prev => ({
       ...prev,
       multicity: prev.multicity.filter((_, i) => i !== index)
     }));
   };
 
-  const handleHotelChange = (e) => {
+  const handleHotelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setHotelData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCarChange = (e) => {
+  const handleCarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCarData(prev => ({ ...prev, [name]: value }));
   };
-// Search flights using API route
-const handleSearchFlights = async () => {
-  // Clear previous errors
-  setError(null);
 
-  // Validation
-  if (!flightData.from || !flightData.to || !flightData.departureDate) {
-    setError('Please fill in all required fields (From, To, Date)');
-    return;
-  }
+  // Search flights using API route
+  const handleSearchFlights = async () => {
+    setError(null);
 
-  setIsSearching(true);
-  try {
-    const fromCode = getCityIATA(flightData.from);
-    const toCode = getCityIATA(flightData.to);
-
-    console.log('Searching flights:', { fromCode, toCode, date: flightData.departureDate });
-
-    // Build query string
-    const queryString = new URLSearchParams({
-      fly_from: fromCode,
-      fly_to: toCode,
-      date_from: flightData.departureDate,
-      adults: flightData.passengers,
-    }).toString();
-
-    console.log('API query:', `/api/flights/search?${queryString}`);
-
-    // Call API route
-    const apiResponse = await fetch(`/api/flights/search?${queryString}`);
-
-    console.log('API response status:', apiResponse.status);
-
-    if (!apiResponse.ok) {
-      const errorData = await apiResponse.json().catch(() => ({}));
-      console.error('API error response:', errorData);
-      throw new Error(errorData.error || 'Unable to search flights');
-    }
-
-    const data = await apiResponse.json();
-    console.log('API success, flights count:', data.data?.length || 0);
-
-    const flights = data.data || [];
-
-    if (flights.length === 0) {
-      setError('No flights found for this route. Try different dates or cities.');
-      setIsSearching(false);
+    if (!flightData.from || !flightData.to || !flightData.departureDate) {
+      setError('Please fill in all required fields (From, To, Date)');
       return;
     }
 
-    // Prepare search params - use encodeURIComponent instead of btoa
-    const searchParams = new URLSearchParams({
-      from: fromCode,
-      to: toCode,
-      fromCity: flightData.from,
-      toCity: flightData.to,
-      departureDate: flightData.departureDate,
-      passengers: flightData.passengers,
-      class: flightData.class,
-      // Use encodeURIComponent to handle special characters like ₦
-      flights: encodeURIComponent(JSON.stringify(flights)),
-    });
+    setIsSearching(true);
+    try {
+      const fromCode = getCityIATA(flightData.from);
+      const toCode = getCityIATA(flightData.to);
 
-    // Navigate to results page
-    router.push(`/flights/results?${searchParams.toString()}`);
-  } catch (error: any) {
-    console.error('Search error:', error);
-    setError(error.message || 'Failed to search flights. Please try again.');
-  } finally {
-    setIsSearching(false);
-  }
-};
+      console.log('Searching flights:', { fromCode, toCode, date: flightData.departureDate });
+
+      const queryString = new URLSearchParams({
+        fly_from: fromCode,
+        fly_to: toCode,
+        date_from: flightData.departureDate,
+        adults: flightData.passengers,
+      }).toString();
+
+      console.log('API query:', `/api/flights/search?${queryString}`);
+
+      const apiResponse = await fetch(`/api/flights/search?${queryString}`);
+
+      console.log('API response status:', apiResponse.status);
+
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json().catch(() => ({}));
+        console.error('API error response:', errorData);
+        throw new Error(errorData.error || 'Unable to search flights');
+      }
+
+      const data = await apiResponse.json();
+      console.log('API success, flights count:', data.data?.length || 0);
+
+      const flights = data.data || [];
+
+      if (flights.length === 0) {
+        setError('No flights found for this route. Try different dates or cities.');
+        setIsSearching(false);
+        return;
+      }
+
+      const searchParams = new URLSearchParams({
+        from: fromCode,
+        to: toCode,
+        fromCity: flightData.from,
+        toCity: flightData.to,
+        departureDate: flightData.departureDate,
+        passengers: flightData.passengers,
+        class: flightData.class,
+        flights: encodeURIComponent(JSON.stringify(flights)),
+      });
+
+      router.push(`/flights/results?${searchParams.toString()}`);
+    } catch (error: any) {
+      console.error('Search error:', error);
+      setError(error.message || 'Failed to search flights. Please try again.');
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   return (
     <div className="w-full" style={{ fontFamily: 'var(--font-poppins)' }}>
@@ -348,7 +347,7 @@ const handleSearchFlights = async () => {
                         value={flightData.from}
                         onChange={handleFlightChange}
                         placeholder="Lagos (LOS)"
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -364,7 +363,7 @@ const handleSearchFlights = async () => {
                         value={flightData.to}
                         onChange={handleFlightChange}
                         placeholder="London (LHR)"
-                        className="w-full pl-8 pr-8 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-8 pr-8 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                       <button
                         onClick={swapCities}
@@ -377,7 +376,6 @@ const handleSearchFlights = async () => {
                   </div>
                 </div>
 
-                {/* Date inputs side by side - Desktop */}
                 <div className="grid grid-cols-2 gap-3">
                   <SimpleDatePicker 
                     value={flightData.departureDate} 
@@ -387,7 +385,6 @@ const handleSearchFlights = async () => {
                   <div></div>
                 </div>
 
-                {/* Passengers and Class side by side */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -401,7 +398,7 @@ const handleSearchFlights = async () => {
                         value={flightData.passengers}
                         onChange={handleFlightChange}
                         min="1"
-                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                        className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 text-xs"
                       />
                     </div>
                   </div>
@@ -414,7 +411,7 @@ const handleSearchFlights = async () => {
                         name="class"
                         value={flightData.class}
                         onChange={handleFlightChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 appearance-none cursor-pointer text-xs"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 appearance-none cursor-pointer text-xs"
                       >
                         <option>Economy</option>
                         <option>Premium Economy</option>
@@ -449,7 +446,6 @@ const handleSearchFlights = async () => {
 
           {activeTab === 'hotels' && (
             <div className="space-y-3">
-              {/* Hotels: Destination and Guests side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -463,7 +459,7 @@ const handleSearchFlights = async () => {
                       value={hotelData.destination}
                       onChange={handleHotelChange}
                       placeholder="Enter city or hotel name"
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                     />
                   </div>
                 </div>
@@ -480,13 +476,12 @@ const handleSearchFlights = async () => {
                       onChange={handleHotelChange}
                       placeholder="Number of guests"
                       min="1"
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Hotels: Check-in and Check-out dates - Desktop */}
               <div className="grid grid-cols-2 gap-3">
                 <SimpleDatePicker 
                   value={hotelData.checkInDate} 
@@ -509,7 +504,6 @@ const handleSearchFlights = async () => {
 
           {activeTab === 'cars' && (
             <div className="space-y-3">
-              {/* Cars: Pickup and Dropoff locations side by side */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
@@ -523,7 +517,7 @@ const handleSearchFlights = async () => {
                       value={carData.pickupLocation}
                       onChange={handleCarChange}
                       placeholder="Enter location"
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                     />
                   </div>
                 </div>
@@ -539,13 +533,12 @@ const handleSearchFlights = async () => {
                       value={carData.dropoffLocation}
                       onChange={handleCarChange}
                       placeholder="Enter location"
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* Cars: Pickup and Dropoff dates - Desktop */}
               <div className="grid grid-cols-2 gap-3">
                 <SimpleDatePicker 
                   value={carData.pickupDate} 
@@ -571,7 +564,6 @@ const handleSearchFlights = async () => {
       {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {/* Mobile Tabs - All three on one line */}
           <div className="flex border-b border-gray-200">
             {tabs.map((tab) => {
               const Icon = tab.icon;
@@ -592,7 +584,6 @@ const handleSearchFlights = async () => {
             })}
           </div>
 
-          {/* Mobile Form Content */}
           <div className={`p-4 ${activeTab === 'flights' ? 'max-h-[350px] overflow-y-auto' : ''}`}>
             {activeTab === 'flights' && (
               <div className="space-y-4">
@@ -610,7 +601,7 @@ const handleSearchFlights = async () => {
                           value={flightData.from}
                           onChange={handleFlightChange}
                           placeholder="Lagos (LOS)"
-                          className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                          className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                         />
                       </div>
                     </div>
@@ -626,7 +617,7 @@ const handleSearchFlights = async () => {
                           value={flightData.to}
                           onChange={handleFlightChange}
                           placeholder="London (LHR)"
-                          className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                          className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                         />
                         <button
                           onClick={swapCities}
@@ -639,7 +630,6 @@ const handleSearchFlights = async () => {
                     </div>
                   </div>
 
-                  {/* Mobile: Date inputs with custom picker */}
                   <div className="space-y-3">
                     <SimpleDatePicker 
                       value={flightData.departureDate} 
@@ -648,7 +638,6 @@ const handleSearchFlights = async () => {
                     />
                   </div>
 
-                  {/* Mobile: Passengers and Class stacked vertically */}
                   <div className="space-y-3">
                     <div>
                       <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -662,7 +651,7 @@ const handleSearchFlights = async () => {
                           value={flightData.passengers}
                           onChange={handleFlightChange}
                           min="1"
-                          className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 text-xs"
+                          className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 text-xs"
                         />
                       </div>
                     </div>
@@ -675,7 +664,7 @@ const handleSearchFlights = async () => {
                           name="class"
                           value={flightData.class}
                           onChange={handleFlightChange}
-                          className="w-full pl-3 pr-8 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 appearance-none cursor-pointer text-xs"
+                          className="w-full pl-3 pr-8 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 appearance-none cursor-pointer text-xs"
                         >
                           <option>Economy</option>
                           <option>Premium Economy</option>
@@ -710,7 +699,6 @@ const handleSearchFlights = async () => {
 
             {activeTab === 'hotels' && (
               <div className="space-y-4">
-                {/* Mobile Hotels: All fields stacked vertically */}
                 <div className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -724,7 +712,7 @@ const handleSearchFlights = async () => {
                         value={hotelData.destination}
                         onChange={handleHotelChange}
                         placeholder="Enter city or hotel name"
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -741,7 +729,7 @@ const handleSearchFlights = async () => {
                         onChange={handleHotelChange}
                         placeholder="Number of guests"
                         min="1"
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -766,7 +754,6 @@ const handleSearchFlights = async () => {
 
             {activeTab === 'cars' && (
               <div className="space-y-4">
-                {/* Mobile Cars: All fields stacked vertically */}
                 <div className="space-y-3">
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1.5">
@@ -780,7 +767,7 @@ const handleSearchFlights = async () => {
                         value={carData.pickupLocation}
                         onChange={handleCarChange}
                         placeholder="Enter location"
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
@@ -796,7 +783,7 @@ const handleSearchFlights = async () => {
                         value={carData.dropoffLocation}
                         onChange={handleCarChange}
                         placeholder="Enter location"
-                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-700 placeholder:text-gray-400 text-xs"
+                        className="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-cyan-500 focus:border-cyan-500 outline-none text-gray-900 placeholder:text-gray-400 text-xs"
                       />
                     </div>
                   </div>
