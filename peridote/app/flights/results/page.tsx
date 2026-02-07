@@ -1,6 +1,5 @@
-
 "use client";
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ArrowLeft, MapPin, Clock, Users, AlertCircle, Plane } from 'lucide-react';
 
@@ -20,13 +19,12 @@ interface Flight {
   bookingLink: string;
 }
 
-export default function FlightsResultsPage() {
+function FlightsResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [sortBy, setSortBy] = useState<'price' | 'duration' | 'stops'>('price');
 
   // Get data from URL
-  const flightsParam = searchParams.get('flights');
   const fromCity = searchParams.get('fromCity') || 'Unknown';
   const toCity = searchParams.get('toCity') || 'Unknown';
   const from = searchParams.get('from') || '';
@@ -36,10 +34,10 @@ export default function FlightsResultsPage() {
   const flightClass = searchParams.get('class') || 'Economy';
 
   // Parse flights
-const flights = JSON.parse(decodeURIComponent(searchParams.get('flights') || '[]'));
+  const flights = JSON.parse(decodeURIComponent(searchParams.get('flights') || '[]'));
 
   // Sort flights
-  const sortedFlights = [...flights].sort((a, b) => {
+  const sortedFlights = [...flights].sort((a: Flight, b: Flight) => {
     switch (sortBy) {
       case 'price':
         return a.price - b.price;
@@ -55,7 +53,6 @@ const flights = JSON.parse(decodeURIComponent(searchParams.get('flights') || '[]
   });
 
   const handleBooking = (flight: Flight) => {
-    // Redirect to booking link
     if (flight.bookingLink) {
       window.open(flight.bookingLink, '_blank');
     } else {
@@ -151,7 +148,7 @@ const flights = JSON.parse(decodeURIComponent(searchParams.get('flights') || '[]
               </div>
             ) : (
               <div className="space-y-4">
-                {sortedFlights.map((flight, index) => (
+                {sortedFlights.map((flight: Flight, index: number) => (
                   <div
                     key={`${flight.id}-${index}`}
                     className="bg-white rounded-lg shadow hover:shadow-lg transition-all border-l-4 border-cyan-500 overflow-hidden"
@@ -239,5 +236,20 @@ const flights = JSON.parse(decodeURIComponent(searchParams.get('flights') || '[]
         </div>
       </div>
     </div>
+  );
+}
+
+export default function FlightsResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading flights...</p>
+        </div>
+      </div>
+    }>
+      <FlightsResultsContent />
+    </Suspense>
   );
 }
