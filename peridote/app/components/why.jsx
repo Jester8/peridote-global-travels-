@@ -39,26 +39,26 @@ export default function Why() {
   ];
 
   return (
-    <section className="w-full bg-white py-8 md:py-16 px-4 md:px-8 -mt-4 md:-mt-8"  style={{ fontFamily: 'var(--font-poppins)',}}>
+    <section className="w-full bg-white py-8 md:py-16 px-4 md:px-8 -mt-4 md:-mt-8" style={{ fontFamily: 'Manrope, sans-serif' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16" >
-          <h2 className="text-2xl md:text-2xl font-semibold text-black mb-4">
+        <div className="text-center mb-16">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4">
             Why Choose Peridote?
           </h2>
-          <p className="text-gray-600 text-base md:text-sm max-w-2xl mx-auto">
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
             Experience premium travel services with unmatched convenience and reliability
           </p>
         </div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <div
                 key={index}
-                className={`flex flex-col items-center text-center transition-all duration-700 ease-out transform ${
+                className={`group flex flex-col items-center text-center p-6 md:p-8 rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-500 ease-out transform hover:-translate-y-2 ${
                   animate
                     ? 'translate-y-0 opacity-100'
                     : 'translate-y-12 opacity-0'
@@ -68,22 +68,22 @@ export default function Why() {
                 {/* Icon Circle */}
                 <div className="mb-6 relative">
                   <div
-                    className="w-15 h-15 rounded-full flex items-center justify-center"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
                     style={{
                       background: 'linear-gradient(135deg, #00587D 0%, #009FE3 100%)'
                     }}
                   >
-                    <Icon size={30} className="text-white" strokeWidth={1.5} />
+                    <Icon size={32} className="text-white" strokeWidth={1.5} />
                   </div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-md font-semibold text-black mb-3">
+                <h3 className="text-lg md:text-xl font-bold text-black mb-3">
                   {feature.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-gray-600 text-sm leading-relaxed hidden md:block">
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed hidden md:block">
                   {feature.description}
                 </p>
                 

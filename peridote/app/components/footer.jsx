@@ -8,7 +8,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-gray-50" style={{ fontFamily: 'var(--font-poppins)' }}>
+    <footer className="w-full bg-gray-50" style={{ fontFamily: 'Manrope, sans-serif' }}>
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
@@ -23,7 +23,7 @@ export default function Footer() {
                 height={40}
                 className="w-10 h-10"
               />
-              <span className="text-xl font-regular text-cyan-500">Peridote</span>
+              <span className="text-xl font-semibold text-cyan-500">Peridote</span>
             </div>
             <p className="text-gray-600 text-sm leading-relaxed mb-6">
               Your trusted partner for seamless travel experiences. Premium flights, hotels, and car rentals.
@@ -31,16 +31,16 @@ export default function Footer() {
             
             {/* Social Icons */}
             <div className="flex gap-3">
-              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg transition-shadow">
+              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg hover:scale-110 transition-all duration-300">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg transition-shadow">
+              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg hover:scale-110 transition-all duration-300">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg transition-shadow">
+              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg hover:scale-110 transition-all duration-300">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg transition-shadow">
+              <a href="#" className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white hover:shadow-lg hover:scale-110 transition-all duration-300">
                 <Linkedin size={18} />
               </a>
             </div>
@@ -48,30 +48,30 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-black font-regular text-lg mb-6">Quick Links</h3>
+            <h3 className="text-black font-semibold text-lg mb-6">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Our Services
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Destinations
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Special Offers
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Travel Blog
                 </a>
               </li>
@@ -80,30 +80,30 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h3 className="text-black font-regular text-lg mb-6">Support</h3>
+            <h3 className="text-black font-semibold text-lg mb-6">Support</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Help Center
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   FAQs
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Booking Policy
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Cancellation
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+                <a href="#" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                   Privacy Policy
                 </a>
               </li>
@@ -112,7 +112,7 @@ export default function Footer() {
 
           {/* Contact Us */}
           <div>
-            <h3 className="text-black font-regular text-lg mb-6">Contact Us</h3>
+            <h3 className="text-black font-semibold text-lg mb-6">Contact Us</h3>
             
             {/* Address */}
             <div className="flex gap-3 mb-4">
@@ -125,7 +125,7 @@ export default function Footer() {
             {/* Phone */}
             <div className="flex gap-3 mb-4">
               <Phone size={20} className="text-cyan-500 flex-shrink-0 mt-0.5" />
-              <a href="tel:+234800PERIDOTE" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+              <a href="tel:+234800PERIDOTE" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                 +234 800 PERIDOTE
               </a>
             </div>
@@ -133,7 +133,7 @@ export default function Footer() {
             {/* Email */}
             <div className="flex gap-3 mb-6">
               <Mail size={20} className="text-cyan-500 flex-shrink-0 mt-0.5" />
-              <a href="mailto:hello@peridote.travel" className="text-gray-600 text-sm hover:text-cyan-500 transition-colors">
+              <a href="mailto:hello@peridote.travel" className="text-gray-600 text-sm hover:text-cyan-500 transition-all duration-300">
                 hello@peridote.travel
               </a>
             </div>
@@ -144,7 +144,7 @@ export default function Footer() {
             </p>
 
             {/* WhatsApp Button */}
-            <a href="https://wa.me/234800" className="inline-block px-4 py-2 bg-green-500 text-white text-sm rounded-full font-regular hover:bg-green-600 transition-colors">
+            <a href="https://wa.me/234800" className="inline-block px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-full hover:bg-green-600 hover:scale-105 transition-all duration-300">
               Chat on WhatsApp
             </a>
           </div>
