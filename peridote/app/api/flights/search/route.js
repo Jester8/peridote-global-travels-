@@ -4,38 +4,90 @@ export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const fly_from = searchParams.get('fly_from');
   const fly_to = searchParams.get('fly_to');
-  const date_from = searchParams.get('date_from'); // expects YYYY-MM-DD
+  const date_from = searchParams.get('date_from');
   const adults = searchParams.get('adults') || '1';
+
+  // ── 1. Check env key is loaded ──────────────────────────────
+  const apiKey = process.env.IGNAV_API_KEY;
+  console.log('🔑 API key present:', !!apiKey);
+  console.log('🔑 API key preview:', apiKey ? apiKey.slice(0, 10) + '...' : 'MISSING');
+
+  if (!apiKey) {
+    return Response.json(
+      { error: 'IGNAV_API_KEY is not set. Check your .env.local file and restart the server.' },
+      { status: 500 }
+    );
+  }
+
+  // ── 2. Validate required params ─────────────────────────────
+  if (!fly_from || !fly_to || !date_from) {
+    return Response.json(
+      { error: 'Missing required params: fly_from, fly_to, date_from' },
+      { status: 400 }
+    );
+  }
+
+  // IGNav core fields — only include passengers if > 1 (their example omits it)
+  const requestBody = {
+    origin: fly_from,
+    destination: fly_to,
+    departure_date: date_from,
+    ...(parseInt(adults) > 1 && { passengers: parseInt(adults) }),
+  };
+
+  console.log('📤 Sending to IGNav:', JSON.stringify(requestBody));
 
   try {
     const response = await fetch('https://ignav.com/api/fares/one-way', {
       method: 'POST',
       headers: {
-        'X-Api-Key': process.env.IGNAV_API_KEY,
+        'X-Api-Key': apiKey,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        origin: fly_from,
-        destination: fly_to,
-        departure_date: date_from,
-        passengers: parseInt(adults),
-      }),
+      body: JSON.stringify(requestBody),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('IGNav API error:', response.status, errorText);
-      throw new Error(`IGNav API returned ${response.status}`);
+    console.log('📥 IGNav response status:', response.status);
+
+    // Read body as text first so we can log it regardless of content type
+    const rawText = await response.text();
+    console.log('📥 IGNav raw response:', rawText.slice(0, 500));
+
+    // Parse JSON safely
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch {
+      return Response.json(
+        { error: `IGNav returned non-JSON response (status ${response.status})`, details: rawText.slice(0, 200) },
+        { status: 500 }
+      );
     }
 
-    const data = await response.json();
+    if (!response.ok) {
+      const msg =
+        data?.error?.message ||
+        data?.error ||
+        data?.message ||
+        `IGNav API returned ${response.status}`;
+
+      console.error('❌ IGNav error:', response.status, JSON.stringify(data));
+
+      return Response.json(
+        { error: msg, details: JSON.stringify(data) },
+        { status: response.status === 401 ? 401 : 500 }
+      );
+    }
+
     const flights = transformIGNavFlights(data, fly_from, fly_to);
+    console.log('✅ Flights found:', flights.length);
+
     return Response.json({ data: flights });
 
   } catch (error) {
-    console.error('Flight search error:', error);
+    console.error('💥 Flight search exception:', error.message);
     return Response.json(
-      { error: 'Failed to search flights. Please try again.' },
+      { error: error.message || 'Failed to search flights. Please try again.' },
       { status: 500 }
     );
   }
@@ -72,16 +124,6 @@ function transformIGNavFlights(ignavData, originCode, destinationCode) {
       bookingLink: `https://ignav.com/book/${itinerary.ignav_id}`,
     };
   });
-}
-
-function calculateDuration(departureTime, arrivalTime) {
-  const dep = new Date(`2000-01-01T${departureTime}`);
-  const arr = new Date(`2000-01-01T${arrivalTime}`);
-  let diff = (arr - dep) / (1000 * 60);
-  if (diff < 0) diff += 24 * 60;
-  const hours = Math.floor(diff / 60);
-  const minutes = diff % 60;
-  return `${hours}h ${minutes}m`;
 }
 
 function formatPrice(price, currency) {
